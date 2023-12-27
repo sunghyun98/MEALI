@@ -2,6 +2,7 @@ package ddongle.meali.basic.response;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,10 +26,11 @@ public class ResponseHeaderServlet extends HttpServlet {
         response.setHeader("my-header", "hello");
 
         PrintWriter writer = response.getWriter();
-        writer.println("ok");
+        writer.println("okd");
 
     }
 
+    //content 편의 메서드
     private void content(HttpServletResponse response) {
         //Content-Type: text/plain;charset=utf-8
         //Content-Length: 2
@@ -36,5 +38,14 @@ public class ResponseHeaderServlet extends HttpServlet {
         response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
         //response.setContentLength(2); //(생략시 자동 생성)
+    }
+
+    //쿠키 편의 메서드
+    private void cookie(HttpServletResponse response) {
+        //Set-Cookie: myCookie=good; Max-Age=600;
+        //response.setHeader("Set-Cookie", "myCookie=good; Max-Age=600");
+        Cookie cookie = new Cookie("myCookie", "good");
+        cookie.setMaxAge(600); //600초
+        response.addCookie(cookie);
     }
 }
