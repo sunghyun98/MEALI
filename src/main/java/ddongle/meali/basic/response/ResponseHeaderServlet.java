@@ -49,4 +49,5 @@ public class ResponseHeaderServlet extends HttpServlet {
         cookie.setMaxAge(600); //600초
         response.addCookie(cookie);
     }
+
 }
