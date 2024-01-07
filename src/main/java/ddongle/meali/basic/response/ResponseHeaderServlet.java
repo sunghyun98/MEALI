@@ -52,6 +52,7 @@ public class ResponseHeaderServlet extends HttpServlet {
         cookie.setMaxAge(600); //600초
         response.addCookie(cookie);
     }
+
     //redirect 편의 메서드
     private void redirect(HttpServletResponse response) throws IOException {
         //Status Code 302
