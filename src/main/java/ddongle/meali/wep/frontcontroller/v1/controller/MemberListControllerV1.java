@@ -13,17 +13,15 @@ import java.io.IOException;
 import java.util.List;
 
 public class MemberListControllerV1 implements ControllerV1 {
+    MemberRepository memberRepository = MemberRepository.getInstance();
     @Override
-    public MyView process(HttpServletRequest request, HttpServletResponse response) throws SecurityException, IOException, ServletException {
-        String username = request.getParameter("username");
-        int age = Integer.parseInt(request.getParameter("age"));
+    public void process(HttpServletRequest request, HttpServletResponse response) throws SecurityException, IOException, ServletException {
+        List<Member> members = memberRepository.findAll();
+        request.setAttribute("member", members);
 
-        Member member = new Member(username,age);
-        memberRepository.save(member);
+        String viewPath = "/WEB-INF/views/members.jsp";
+        RequestDispatcher dispatcher = request.getRequestDispatcher(viewPath);
+        dispatcher.forward(request, response);
 
-        //모델에 데이터를 보관한다
-        request.setAttribute("member", member);
-
-        return new MyView("/WEB-INF/views/save-result.jsp");
     }
 }
