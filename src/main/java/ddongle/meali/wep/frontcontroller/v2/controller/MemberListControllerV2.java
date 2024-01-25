@@ -16,7 +16,7 @@ public class MemberListControllerV2 implements ControllerV2 {
     @Override
     public MyView process(HttpServletRequest request, HttpServletResponse response) throws SecurityException, IOException, ServletException {
         List<Member> members = memberRepository.findAll();
-        request.setAttribute("member", members);
+        request.setAttribute("members", members);
         return new MyView( "/WEB-INF/views/members.jsp");
     }
 }

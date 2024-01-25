@@ -1,5 +1,6 @@
 package ddongle.meali.wep.frontcontroller.v3;
 
+import ddongle.meali.wep.frontcontroller.ModelView;
 import ddongle.meali.wep.frontcontroller.MyView;
 
 import ddongle.meali.wep.frontcontroller.v3.controller.MemberFormControllerV3;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.apache.taglibs.standard.lang.jstl.ImplicitObjects.createParamMap;
 
 @WebServlet(name = "frontControllerServletV3", urlPatterns = "/front-controller/v3/*")
 public class FrontControllerServletV3 extends HttpServlet {
@@ -38,11 +41,23 @@ public class FrontControllerServletV3 extends HttpServlet {
         }
 
         //paramMap
+        Map<String, String> paramMap = createParamMap(request);
+        ModelView mv = controller.process(paramMap);
+
+        String viewName = mv.getViewName();
+        MyView view = viewResolver(viewName);
+
+        view.render(mv.getModel(), request, response);
+    }
+
+    private Map<String, String> createParamMap(HttpServletRequest request) {
         Map<String, String> paramMap = new HashMap<>();
-        request.getParameterNames().asIterator().forEachRemaining(paramMap -> paramMap.put(paramMap, request.getParameter(paramMap)));
-
-
-        MyView view = controller.process(request, response);
-        view.render(request, response);
+        request.getParameterNames().asIterator()
+                .forEachRemaining(paramName -> paramMap.put(paramName,
+                        request.getParameter(paramName)));
+        return paramMap;
+    }
+    private MyView viewResolver(String viewName) {
+        return new MyView("/WEB-INF/views/" + viewName + ".jsp");
     }
 }
