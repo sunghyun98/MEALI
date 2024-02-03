@@ -23,8 +23,8 @@ public class ControllerV3HandlerAdapter implements MyHandlerAdapter {
         ControllerV3 controller = (ControllerV3) handler;
 
         Map<String, String> paramMap = createParamMap(request);
-        controller.process(paramMap);
-        return null;
+        ModelView mv = controller.process(paramMap);
+        return mv;
     }
     private Map<String, String> createParamMap(HttpServletRequest request) {
         Map<String, String> paramMap = new HashMap<>();
