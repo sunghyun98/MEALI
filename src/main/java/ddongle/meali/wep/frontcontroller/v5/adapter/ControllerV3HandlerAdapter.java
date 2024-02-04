@@ -12,16 +12,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ControllerV3HandlerAdapter implements MyHandlerAdapter {
+
+    //ControllerV3를 처리할 수 있는 어댑터를 뜻한다.
     @Override
     public boolean supports(Object handler) {
         return (handler instanceof ControllerV3);
     }
 
-
     @Override
-    public ModelView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
+    public ModelView handle(HttpServletRequest request, HttpServletResponse response, Object handler)  {
         ControllerV3 controller = (ControllerV3) handler;
-
         Map<String, String> paramMap = createParamMap(request);
         ModelView mv = controller.process(paramMap);
         return mv;
