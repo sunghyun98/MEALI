@@ -6,7 +6,11 @@ import ddongle.meali.wep.frontcontroller.MyView;
 import ddongle.meali.wep.frontcontroller.v3.controller.MemberFormControllerV3;
 import ddongle.meali.wep.frontcontroller.v3.controller.MemberListControllerV3;
 import ddongle.meali.wep.frontcontroller.v3.controller.MemberSaveControllerV3;
+import ddongle.meali.wep.frontcontroller.v4.controller.MemberFormControllerV4;
+import ddongle.meali.wep.frontcontroller.v4.controller.MemberListControllerV4;
+import ddongle.meali.wep.frontcontroller.v4.controller.MemberSaveControllerV4;
 import ddongle.meali.wep.frontcontroller.v5.adapter.ControllerV3HandlerAdapter;
+import ddongle.meali.wep.frontcontroller.v5.adapter.ControllerV4HandlerAdapter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -31,18 +35,25 @@ public class FrontControllerServletV5 extends HttpServlet {
     }
 
     private void initHandlerMappingMap() {
+        //v3
         handlerMappingMap.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3());
         handlerMappingMap.put("/front-controller/v5/v3/members/save", new MemberSaveControllerV3());
         handlerMappingMap.put("/front-controller/v5/v3/members", new MemberListControllerV3());
+
+        //v4 추가
+        handlerMappingMap.put("/front-controller/v5/v4/members/new-form", new MemberFormControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members/save", new MemberSaveControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members", new MemberListControllerV4());
+
     }
 
     private void initHandlerAdapters() {
         handlerAdapters.add(new ControllerV3HandlerAdapter());
+        handlerAdapters.add(new ControllerV4HandlerAdapter());
     }
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse
-            response)
-            throws ServletException, IOException {
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //요청한 핸들러를 가져온다.
         Object handler = getHandler(request);
         if (handler == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

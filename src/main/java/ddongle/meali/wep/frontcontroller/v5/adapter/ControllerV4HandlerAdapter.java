@@ -2,6 +2,7 @@ package ddongle.meali.wep.frontcontroller.v5.adapter;
 
 import ddongle.meali.wep.frontcontroller.ModelView;
 import ddongle.meali.wep.frontcontroller.v3.ControllerV3;
+import ddongle.meali.wep.frontcontroller.v4.ControllerV4;
 import ddongle.meali.wep.frontcontroller.v5.MyHandlerAdapter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,19 +12,25 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ControllerV3HandlerAdapter implements MyHandlerAdapter {
+public class ControllerV4HandlerAdapter implements MyHandlerAdapter {
 
-    //ControllerV3를 처리할 수 있는 어댑터를 뜻한다.
+
     @Override
     public boolean supports(Object handler) {
-        return (handler instanceof ControllerV3);
+        return (handler instanceof ControllerV4);
     }
 
     @Override
-    public ModelView handle(HttpServletRequest request, HttpServletResponse response, Object handler)  {
-        ControllerV3 controller = (ControllerV3) handler;
+    public ModelView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
+        ControllerV4 controller = (ControllerV4) handler;
+
         Map<String, String> paramMap = createParamMap(request);
-        ModelView mv = controller.process(paramMap);
+        HashMap<String, Object> model = new HashMap<>();
+
+        String viewName = controller.process(paramMap, model);
+
+        ModelView mv = new ModelView(viewName);
+        mv.setModel(model);
 
         return mv;
     }
@@ -34,5 +41,4 @@ public class ControllerV3HandlerAdapter implements MyHandlerAdapter {
                         request.getParameter(paramName)));
         return paramMap;
     }
-
 }
